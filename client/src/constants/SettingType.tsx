@@ -1,0 +1,15 @@
+export const SETTING_TYPE_UPLOAD_IMAGE = "image";
+export const SETTING_TYPE_UPLOAD_FILE = "file";
+export const SETTING_TYPE_INPUT_TEXT = "text";
+export const SETTING_TYPE_TEXT_AREA = "text_area";
+export const SETTING_TYPE_RICH_TEXT = "rich_text_box";
+export const SETTING_TYPE_CODE_EDITOR = "code_editor";
+export const SETTING_TYPE_CHECKBOX = "checkbox";
+export const SETTING_TYPE_RADIO = "radio_btn";
+export const SETTING_TYPE_SELECT = "select_dropdown";
+export const SETTING_TYPE_SELECT_MULTIPLE = "select_multiple";
+export const SETTING_TYPE_NUMBER = "number";
+export const SETTING_TYPE_DATE = "date";
+export const SETTING_TYPE_DATETIME = "timestamp";
+export const SETTING_TYPE_COLOR = "color";
+export const SETTING_TYPE_HIDDEN = "hidden";

@@ -1,0 +1,3 @@
+.container-base {
+    @apply px-[16px]  w-full max-w-[1530px];
+}

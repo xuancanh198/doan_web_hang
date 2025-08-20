@@ -1,0 +1,17 @@
+{
+    "label": {
+        "category": {
+            "name": "Tên danh mục",
+            "code": "Mã danh mục",
+            "status": "Trạng thái",
+            "statusValue": {
+                "Active" : "Đang hoạt động",
+                "close" : "Đang đóng"
+            },
+            "image": "Ảnh",
+            "description": "Mô tả",
+            "created_at": "Thời gian tạo",
+            "updated_at": "Thời gian cập nhật"
+        }
+    }
+}

@@ -1,0 +1,244 @@
+<?php
+
+namespace App\Services\Request;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use App\Helpers\ConvertData;
+use function PHPUnit\Framework\isNumeric;
+
+class BaseRequest extends FormRequest
+{
+    protected $defaultMessages = [];
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initializeMessages();
+    }
+
+    protected function returnFailedValidation($errorMessage)
+    {
+        $response = response()->json([
+            'status' => 'error',
+            'message' => trans('message.errorMessage'),
+            'errors' => $errorMessage,
+        ], 422);
+        throw new ValidationException($this->validator, $response);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $this->returnFailedValidation($validator->errors()->toArray());
+    }
+
+    protected function checkFilterTime($start, $end, $type)
+    {
+        $messages = [];
+        if ($start === null &&  $end === null && $type === null) {
+            return [];
+        }
+        if ($start === null || $end === null || $type === null) {
+            $messages[] = trans('message.filter_time_required');
+        } else {
+            if (strtotime($start) > strtotime($end)) {
+                $messages[] = trans('message.end_greater_than_start');
+            }
+        }
+        return $messages;
+    }
+    public function prepareForValidation()
+    {
+        $data = [];
+        if ($this->isMethod('put') || $this->isMethod('delete')) {
+            $data['id'] =  $this->route('id');
+            if ($this->isMethod('delete')) {
+                if ($data['id'] === null) {
+                    if (isNumeric($this->id)) {
+                        $data['id'] = app(ConvertData::class)->normalizeIds($this->id);
+                    }
+                }
+            }
+        } else if ($this->isMethod('get')) {
+            if ($this->start) {
+                $data['start'] = app(ConvertData::class)->convertDateTimeFormat($this->start);
+            }
+            if ($this->end) {
+                $data['end'] = app(ConvertData::class)->convertDateTimeFormat($this->end);
+            }
+
+            if ($this->excel) {
+                $data['excel'] = app(ConvertData::class)->convertToBool($this->excel);
+            }
+            if ($this->isSelect) {
+                $data['isSelect'] = app(ConvertData::class)->convertToBool($this->isSelect);
+            }
+        }
+
+        if (!empty($data)) {
+            $this->merge($data);
+        }
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $messages = [];
+
+            if ($this->has('start') && !$this->start) {
+                $messages[] = trans('message.start_date_format');
+            }
+
+            if ($this->has('end') && !$this->end) {
+                $messages[] = trans('message.end_date_format');
+            }
+            if ($this->has('excel') && $this->excel === false) {
+                $messages[] = trans('message.invalid_excel_value');
+            }
+            if ($this->has('isSelect') && $this->isSelect === false) {
+                $messages[] = trans('message.invalid_isSelect_value');
+            }
+            $messages = array_merge($messages, $this->checkFilterTime($this->start, $this->end, $this->typeTime));
+            if (!empty($messages)) {
+                foreach ($messages as $message) {
+                    $validator->errors()->add('validate_error', $message);
+                }
+            }
+        });
+    }
+
+    protected function getMethodIdDeleteAndUpdate($table)
+    {
+        if ($this->isMethod('delete')) {
+            $id = $this->input('id');
+
+            if (is_array($id)) {
+                return [
+                    'id' => 'required|array',
+                    'id.*' => "integer|exists:$table,id",
+                ];
+            }
+        }
+        return [
+            'id' => "required|integer|exists:$table,id",
+        ];
+    }
+
+
+    protected function checkIdMethodDelete($table, $id)
+    {
+        if (is_array($id)) {
+            return [
+                'id' => 'required|array',
+                'id.*' => 'integer|exists:' . $table . ',id',
+            ];
+        }
+        return [
+            'id' => 'required|integer|exists:' . $table . ',id',
+        ];
+    }
+
+
+
+    protected function getMethodGet()
+    {
+        return [
+            'page' => 'nullable|integer|min:1',
+            'limit' => 'nullable|integer|min:1',
+            'search' => 'nullable|string|min:1|max:255',
+            'start' => 'nullable',
+            'end' => 'nullable',
+            'typeTime' => 'nullable',
+            'filtersBase64' => "nullable|string"
+        ];
+    }
+    public function attributesBase()
+    {
+        return [
+            'page' => trans('message.page'),
+            'limit' => trans('message.limit'),
+            'typeTime' => trans('message.typeTime'),
+            'start' => trans('message.start'),
+            'end' => trans('message.end'),
+            'search' => trans('message.search'),
+        ];
+    }
+    protected function initializeMessages()
+    {
+        $this->defaultMessages = [
+            'required' => trans('message.required'),
+            'email' => trans('message.email'),
+            'max' => trans('message.max'),
+            'min' => trans('message.min'),
+            'min_string' => trans('message.min_string'),
+            'min_numeric' => trans('message.min_numeric'),
+            'min_array' => trans('message.min_array'),
+            'integer' => trans('message.integer'),
+            'string' => trans('message.string'),
+            'date' => trans('message.date'),
+            'unique' => trans('message.unique'),
+            'in' => trans('message.in'),
+            'exists' => trans('message.exists'),
+            'file' => trans('message.file'),
+            'image' => trans('message.image'),
+            'regex' => trans('message.regex'),
+            'before' => trans('message.before'),
+            'before_or_equal' => trans('message.before_or_equal'),
+            'nullable' => trans('message.nullable'),
+            'numeric' => trans('message.numeric'),
+        ];
+    }
+
+    public function generateMessages(array $rules)
+    {
+        $messages = [];
+        $attributes = $this->attributes();
+
+        foreach ($rules as $field => $fieldRules) {
+            $fieldRulesArray = explode('|', $fieldRules);
+            foreach ($fieldRulesArray as $rule) {
+                if (strpos($rule, ':') !== false) {
+                    [$ruleName, $ruleValue] = explode(':', $rule);
+                    if (in_array($ruleName, ['unique', 'exists'])) {
+                        $messages["{$field}.{$ruleName}"] = str_replace(
+                            [':attribute', ':value'],
+                            [$attributes[$field] ?? $field, $ruleValue],
+                            $this->defaultMessages[$ruleName] ?? "{$field} không hợp lệ."
+                        );
+                    }
+                    if ($ruleName === 'min') {
+                        if (is_numeric($ruleValue)) {
+                            $messages["{$field}.{$ruleName}"] = str_replace(
+                                [':attribute', ":{$ruleName}"],
+                                [$attributes[$field] ?? $field, $ruleValue],
+                                $this->defaultMessages['min_numeric'] ?? "{$field} phải có giá trị ít nhất :{$ruleName}."
+                            );
+                        } elseif (is_array($this->$field)) {
+                            $messages["{$field}.{$ruleName}"] = str_replace(
+                                [':attribute', ":{$ruleName}"],
+                                [$attributes[$field] ?? $field, $ruleValue],
+                                $this->defaultMessages['min_array'] ?? "{$field} phải có ít nhất :{$ruleName} mục."
+                            );
+                        } else {
+                            $messages["{$field}.{$ruleName}"] = str_replace(
+                                [':attribute', ":{$ruleName}"],
+                                [$attributes[$field] ?? $field, $ruleValue],
+                                $this->defaultMessages['min_string'] ?? "{$field} phải có ít nhất :{$ruleName} ký tự."
+                            );
+                        }
+                    }
+                } else {
+                    $messages["{$field}.{$rule}"] = str_replace(
+                        ':attribute',
+                        $attributes[$field] ?? $field,
+                        $this->defaultMessages[$rule] ?? "{$field}.{$rule} không hợp lệ."
+                    );
+                }
+            }
+        }
+
+        return $messages;
+    }
+}

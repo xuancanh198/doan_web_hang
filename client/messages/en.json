@@ -1,0 +1,29 @@
+    {
+        "HomePage": {
+            "title": "chào cậu"
+        },
+        "Login": {
+            "text": "Đăng nhập",
+            "input": {
+                "username": "Tên đăng nhập",
+                "password": "Mật khẩu",
+                "forgetPassword": "Quên mật khẩu",
+                "email" : "Email",
+                "phone" : "Số điện thoại",
+                "otp" : "OTP"
+             },
+            "validation": {
+                "invalidEmail": "Email sai định dạng",
+                "invalidPhone"  : "Số điện thoại sai định dạng",
+                "required": "Trường {attribute} không được bỏ trống",
+                "minString": "Trường {attribute} không thể nhỏ hơn {min} ký tự",
+                "maxString": "Trường {attribute} không thể lớn hơn {max} ký tự"
+            }
+        },
+        "ManageInAdmin" : {
+            "Page" : {
+                "category" : "Danh mục"
+            },
+            "ManageText" : "Quản lý {{attribute}}"
+        }
+    }

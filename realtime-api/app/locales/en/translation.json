@@ -1,0 +1,10 @@
+{
+  "email": {
+    "title": "Account Created Successfully",
+    "greeting": "Hello {{username}}!",
+    "content1": "Your account has been created",
+    "username": "Username",
+    "password": "Password",
+    "warning": "Please do not share your username or password with anyone"
+  }
+}

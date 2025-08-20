@@ -1,0 +1,345 @@
+    {
+        "Login": {
+            "text": "Đăng nhập",
+            "input": {
+                "username": "Tên đăng nhập",
+                "password": "Mật khẩu",
+                "forgetPassword": "Quên mật khẩu",
+                "email": "Email",
+                "phone": "Số điện thoại",
+                "otp": "OTP"
+            },
+            "validation": {
+                 "RequiredField": "Vui lòng nhập {field}",
+                "MinLength": "{field} phải có ít nhất {min} ký tự",
+                "MaxLength": "{field} không được vượt quá {max} ký tự",
+                "MustBeNumber": "{field} phải là số",
+                "MinValue": "{field} phải lớn hơn hoặc bằng {min}",
+                "EndDateMustBeAfterStartDate": "Ngày kết thúc phải sau ngày bắt đầu",
+                "MustSelectImage": "Vui lòng chọn ít nhất một ảnh"
+            }
+        },
+        "Client" : {
+            "Home": {
+                "FeaturedCategories": "Danh mục nổi bật",
+                 "FeaturedSeries": "Series nổi bật",
+                   "FeaturedAuthor": "Tác giả nổi bật"
+            }
+        },
+        "ManageInAdmin": {
+            "Validation": {
+                   "RequiredField": "Vui lòng nhập {field}",
+                "MinLength": "{field} phải có ít nhất {min} ký tự",
+                "MaxLength": "{field} không được vượt quá {max} ký tự",
+                "MustBeNumber": "{field} phải là số",
+                "MinValue": "{field} phải lớn hơn hoặc bằng {min}",
+                "EndDateMustBeAfterStartDate": "Ngày kết thúc phải sau ngày bắt đầu",
+                "MustSelectImage": "Vui lòng chọn ít nhất một ảnh",
+                "FileTooLarge": "Tệp quá lớn (tối đa {maxSize})",
+                "InvalidFileType": "Loại tệp không hợp lệ"
+            },
+            "Page": {
+                "product": "Sản phẩm",
+                "category": "Danh mục",
+                "author": "Tác giả",
+                "publisher": "Nhà xuất bản",
+                "series": "Series",
+                "system": "Hệ thống",
+                "setting": "Cài đặt",
+                "permisstion": "Quyền",
+                "action": "Hành động",
+                "permisstionDetail": "Quyền chi tiết",
+                "staff" : "Nhân viên",
+                "role" : "chức vụ",
+                "banner" : "Banner",
+                "logActive": "Lịch sử hành động",
+                "productImportExport" : "Quản lý nhập xuất sản phẩm"
+            },
+            "ManageTitleText": "Quản lý",
+            "ListTitleText": "Danh sách",
+            "Base": {
+                "ChangeLimit": "Thay đổi số phần tử",
+                "Action": "Hành động",
+                "Create": "Thêm mới",
+                "Update": "Cập nhật",
+                "View": "Xem chi tiết",
+                "Delete": "Xóa",
+                "Confirm": "Xác nhận",
+                "Cancel": "Hủy",
+                "DataSearchText": "Nhập thông tin cần tìm",
+                "CreateTitle": "Thêm mới {field}",
+                "EditTitle": "Cập nhật {field}",
+                "ViewDetailTitle": "Xem chi tiết {field}",
+                "TitleDeleteModalCategory": "Bạn có muốn xóa danh mục này không ?",
+                "TitleDeleteModal": "Bạn có muốn xóa {field} này không ?",
+                "TitleWhenCreateModal": "Thêm mới thành công bạn có muốn quay về trang danh sách không ?",
+                "TitleWhenUpdateModal": "Cập nhật thành công bạn có muốn quay về trang danh sách không ?",
+                "dropHere": "Thả ảnh vào đây...",
+                "dragOrClick": "Kéo & thả hoặc click để chọn ảnh",
+                "NotificationCreateSuccess": "Thông báo thực hiện thành công",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "ChangeTimeType": "Nhập dạng thời gian",
+                "ChangeTimeStatus": "Chọn dạng trạng thái",
+                "ChangeCategory": "Chọn danh mục",
+                "ChangeAuthor" : "Chọn tác giả",
+                 "ChangePublisher" : "Chọn Nhà sản xuất",
+                  "ChangeSeries" : "Chọn series",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Category": {
+                "name": "Tên thể loại",
+                "code": "Mã thể loại",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Hoạt động",
+                    "hideTemporarily": "Tạm ẩn"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "parent": "Danh mục cha",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+           "Banner": {
+            "title": "Tiêu đề Banner",
+            "status": "Trạng thái",
+            "statusValue": {
+               "active": "Hoạt động",
+               "hideTemporarily": "Tạm ẩn"
+             },
+            "link": "Liên kết Banner",
+            "position": "Vị trí của trang Banner",
+            "order": "Thứ tự Banner",
+            "start_time": "Thời gian bắt đầu",
+            "end_time": "Thời gian kết thúc",
+            "description": "Mô tả",
+            "image": "Hình ảnh",
+            "changeTextPlaceholder": "Lựa chọn {field}",
+             "created_at": "Thời gian tạo",
+            "updated_at": "Thời gian cập nhật"
+            },
+            "Author": {
+                "name": "Tên tác giả",
+                "code": "Mã tác giả",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang sống",
+                    "hideTemporarily": "Đã quy tiên"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Publisher": {
+                "name": "Tên nhà xuất bản",
+                "code": "Mã nhà xuất bản",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Series": {
+                "name": "Tên series",
+                "code": "Mã series",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Permisstion": {
+                "name": "Tên quyền",
+                "code": "Mã quyền",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "PermisstionDetail": {
+                "name": "Tên quyền chi tiết",
+                "url": "Đường dẫn quyền chi tiết",
+                "code": "Mã quyền chi tiết",
+                "status": "Trạng thái",
+                "permisstion" : "Quyền",
+                "action" :"Hành động",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+             "Action": {
+                "name": "Tên hành động",
+                "code": "Mã hành động",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Product": {
+                "name": "Tên sản phẩm",
+                "code": "Mã sản phẩm",
+                "price" : "Giá bán sản phẩm",
+                 "rent_price" : "Giá cho thuê sản phẩm",
+                "pages" : "Tổng số trang",
+                "lang" : "Ngôn ngữ sản phẩm",
+                "tags" : "Danh sách tag",
+                "published_ad" : "Thời gian công khai bán",
+                "coverPhoto" : "Ảnh bìa",
+                "add_card_view" : "Tổng số lượt thêm vào giỏ hàng",
+                "view_count" : "Tổng số xem",
+                "quantity" : "Tổng số lượng hàng trong kho",
+                "images" : "Danh sách ảnh",
+                "attribute" : {
+                    "text" : "Thuộc tính" ,
+                    "Create" : "Thêm thuộc tính",
+                    "name" : "Tên thuộc tính",
+                    "value" : "Giá trị thuộc tính"
+                },
+                "started_ad" : "Thời gian bắt đầu",
+                "ended_ad" : "Thời gian kết thúc",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "isBuy" : "Trạng thái bán",
+                "statusIsbuy": {
+                    "active": "Đang bán",
+                    "hideTemporarily": "Đã dừng bán"
+                },
+                "isRent" : "Trạng cho thuê",
+                "statusIsRent": {
+                    "active": "Đang cho thuê",
+                    "hideTemporarily": "Đã dừng cho thuê"
+                },
+                "description": "Mô tả",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Setting": {
+                "name": "Tên cài đặt",
+                 "description": "Mô tả",
+                "key": "Mã cài đặt",
+                "value": "Giá trị cài đặt",
+                "group": "Nhóm cài đặt",
+                "type": "Loại cài đặt",
+            
+                "typeValues": {
+                    "image": "Ảnh",
+                    "file": "Tệp",
+                    "text": "Văn bản",
+                    "text_area": "Văn bản nhiều dòng",
+                    "rich_text_box": "Trình soạn thảo",
+                    "code_editor": "Trình soạn mã",
+                    "checkbox": "Hộp kiểm",
+                    "radio_btn": "Nút chọn",
+                    "select_dropdown": "Danh sách chọn",
+                    "select_multiple": "Danh sách chọn nhiều",
+                    "number": "Số",
+                    "date": "Ngày",
+                    "timestamp": "Ngày & giờ",
+                    "color": "Màu sắc",
+                    "hidden": "Ẩn",
+                    "status": "Trạng thái"
+                },
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật"
+            },
+            "Role" :{
+                "name": "Tên chức vụ",
+                "code": "Mã chức vụ",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "description": "Mô tả",
+                "permisstionDetail": "Quyền chi tiết",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "image": "Ảnh",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "Staff": {
+                "code": "Mã nhân viên",
+                "username": "Tên đăng nhập",
+                "fullname": "Họ và tên",
+                "email": "Email",
+                "phone": "Số điện thoại",
+                "status": "Trạng thái",
+                "statusValue": {
+                    "active": "Đang hoạt động",
+                    "hideTemporarily": "Đã dừng"
+                },
+                "address": "Địa chỉ",
+                "description": "Mô tả",
+                "avatar": "Ảnh đại diện",
+                "permission_detail": "Chi tiết quyền",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "role_id": "Vai trò",
+                "changeTextPlaceholder": "Lựa chọn {field}"
+            },
+            "LogActive": {
+                "log_name": "Loại log",
+                "description": "Mô tả",
+                "subject_type": "Màn",
+                "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật",
+                "event": "Hành động"
+            },
+            "productImportExport" : {
+                "code" : "Mã nhập xuất",
+                "type" : "Loại nhập xuất",
+                "typeValue" :{
+                    "import" : "Nhập",
+                    "export" : "Xuất"
+                },
+                "mode" : "Phân loại",
+                "modeValue" :{
+                    "sell" : "Bán",
+                    "rent" : "Thuê"
+                },
+                "quantity" :"số lượng",
+                "import_price" : "Giá nhập",
+                "expected_sell_price" : "Giá bán ước tính",
+                "expected_rent_price" : "Giá thuê ước tính",
+                "actual_price_at_that_time" : "Giá ước tính",
+                "note" : "Ghi chú",
+                 "created_at": "Thời gian tạo",
+                "updated_at": "Thời gian cập nhật"
+            }
+        }
+    }

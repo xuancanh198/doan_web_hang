@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= t('email.title') %></title>
+  </head>
+  <body>
+    <h2><%= t('email.greeting', { username }) %></h2>
+    <p><%= t('email.content1') %></p>
+    <p><strong><%= t('email.username') %>:</strong> <%= username %></p>
+    <p><strong><%= t('email.password') %>:</strong> <%= password %></p>
+    <p><%= t('email.warning') %></p>
+  </body>
+</html>

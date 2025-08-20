@@ -1,0 +1,10 @@
+{
+  "email": {
+    "title": "Thông báo tạo tài khoản thành công",
+    "greeting": "Xin chào {{username}}!",
+    "content1": "Tài khoản của bạn đã được tạo",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "warning": "Vui lòng không chia sẻ tài khoản hay mật khẩu cho bất kì ai khác"
+  }
+}
