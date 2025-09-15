@@ -13,8 +13,9 @@ import {
   findIdProduct,
   findIdRole,
   findIdStaff,
-  findIdBanner
-} from '@/lib/callAPI/ServiceReduxCallAPI';
+  findIdBanner,
+  findIdProductImportExport
+} from '@/lib/callAPI/admin/ServiceServerCallAPI';
 
 import {
   CATEGORY_MANAGE,
@@ -28,7 +29,8 @@ import {
   PRODUCT_MANAGE,
   ROLE_MANAGE,
   STAFF_MANAGE,
-  BANNER_MANAGE
+  BANNER_MANAGE,
+  PRODUCT_IMPORT_EXPORT_MANAGE
 } from '@/constants/PageManageInAdmin';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -88,7 +90,10 @@ export default async function Page({
        case BANNER_MANAGE:
       res = await findIdBanner(+id, true);
       break;
-    default:
+    case PRODUCT_IMPORT_EXPORT_MANAGE:
+      res = await findIdProductImportExport(+id, true);
+      break;
+      default:
       return <p className="text-red-500">Không tìm thấy dữ liệu</p>;
   }
 

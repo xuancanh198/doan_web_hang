@@ -5,7 +5,7 @@ import {
   getDataPermisstionServer,
   getDataActionServer,
   getDataPermisstionDetailServer
-} from '@/lib/callAPI/ServiceReduxCallAPI';
+} from '@/lib/callAPI/admin/ServiceReduxCallAPI';
 import {
   PAGE_DEFAULT,
   LIMIT_DEFAULT,

@@ -12,7 +12,7 @@ import Badge from "../../../ui/badge/Badge";
 import { RoleListTable } from "@/constants/Interface";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { deleteRole } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { deleteRole } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { RootState } from "@/lib/redux/store";

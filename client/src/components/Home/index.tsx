@@ -6,10 +6,11 @@ import HotProduct from "@/components/Home/Product/HotProduct"
 import SliderHome from "@/components/Home/Slider/SliderHome"
 import CoreSlideMutiItemList from "@/components/common/Slide/CoreSlideMutiItemList"
 import {
-  getDataCategoryClient,
-   getDataAuthorClient,
-  getDataSeriesClient
-} from "@/lib/callAPI/ClientServiceAPI"
+getDataCategoryServer,
+getDataAuthorServer,
+getDataPublisherServer,
+getDataSeriesServer
+} from "@/lib/callAPI/user/ServerServiceAPI"
 
 const products = [
   {
@@ -178,29 +179,48 @@ const products = [
 const HomePage = async () => {
   const t = await getTranslations('Client');
 
-  const categoryData = await getDataCategoryClient();
-  // const authorData = await getDataAuthorClient();
-  // const seriesData = await getDataSeriesClient();
-  console.log(categoryData)
+  const categoryData = await getDataCategoryServer();
+  const authorData = await getDataAuthorServer();
+  // const publisherData = await getDataPublisherServer();
+   const seriesData = await getDataSeriesServer();
+ 
   return (
     <main>
       <BannerHome/>
       <div className="my-[10px] md:py-[30px]">
         <SliderHome/>
       </div>
-      <div className="my-[10px] md:py-[30px] container-base">
-        <h2 className="text-[20px] md:text-[30px] font-bold mb-[10px] md:mb-[18px]">{t('Home.FeaturedCategories')}</h2>
-        <CoreSlideMutiItemList/>
-     </div>
+     {
+        categoryData?.result?.data && categoryData?.result?.data?.length > 0
+        &&
+        (
+           <div className="my-[10px] md:py-[30px] container-base">
+              <h2 className="text-[20px] md:text-[30px] font-bold mb-[10px] md:mb-[18px]">{t('Home.FeaturedCategories')}</h2>
+              <CoreSlideMutiItemList data={categoryData?.result?.data} link={`category`} />
+          </div>
+        )
+      }
+     {
+        authorData?.result?.data && authorData?.result?.data?.length > 0
+        &&
+        (
      <div className="my-[10px] md:py-[30px] container-base">
         <h2 className="text-[20px] md:text-[30px] font-bold mb-[10px] md:mb-[18px]">{t('Home.FeaturedAuthor')}</h2>
-        <CoreSlideMutiItemList/>
+        <CoreSlideMutiItemList data={authorData?.result?.data} link={`author`} />
      </div>
+      )
+      }
       <HotProduct />
+        {
+        seriesData?.result?.data && seriesData?.result?.data?.length > 0
+        &&
+        (
       <div className="my-[10px] md:py-[30px] container-base">
         <h2 className="text-[20px] md:text-[30px] font-bold mb-[10px] md:mb-[18px]">{t('Home.FeaturedSeries')}</h2>
-        <CoreSlideMutiItemList/>
+        <CoreSlideMutiItemList data={seriesData?.result?.data} link={`series`}/>
      </div>
+      )
+      }
       <ListProduct products={products}/>
     </main>
   );

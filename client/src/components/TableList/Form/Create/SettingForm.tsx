@@ -9,9 +9,9 @@ import Input from "@/components/form/input/InputField";
 import Select from "@/components/form/Select";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createSetting } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createSetting } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { getDataSettingServer } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { getDataSettingServer } from "@/lib/callAPI/admin/ServiceReduxCallAPI"
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT, FALSE_VALUE_DEFAULT } from "@/constants/DataDefault";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from "@/lib/redux/store";

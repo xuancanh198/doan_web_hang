@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\HasApiTokens;
 use App\Enums\TablesEnum;
 use App\Enums\ActiveLogEnum;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -14,12 +14,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
 
-class Staff extends Model
+class Staff extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, LogsActivity;
     protected $table = TablesEnum::STAFF_TABLE;
 
-    protected $id = TablesEnum::PRIMARY_ID;
+    protected $primaryKey  = TablesEnum::PRIMARY_ID;
 
     protected static $logName = ActiveLogEnum::CATEGORY_VALUE;
 
@@ -29,7 +29,11 @@ class Staff extends Model
 
     protected static $logOnlyDirty = true;
 
-
+    public function hasPermission(string $code): bool
+    {
+        $permissions = $this->getPermissions();
+        return isset($permissions[$code]) && $permissions[$code] === true;
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

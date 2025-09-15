@@ -16,7 +16,7 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createAction} from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createAction} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from "@/lib/redux/store";

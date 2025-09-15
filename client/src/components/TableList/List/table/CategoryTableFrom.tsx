@@ -12,14 +12,14 @@ import Badge from "../../../ui/badge/Badge";
 import { CategoryListTable } from "@/constants/Interface";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { deleteCategory } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { deleteCategory } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { RootState } from "@/lib/redux/store";
 import { addDeleteId, removeDeleteId, setDeleteIds } from "@/lib/redux/Features/Crud";
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT } from "@/constants/DataDefault";
 import { setListCategoryAll} from "@/lib/redux/Features/Crud";
-import { getDataCategoryClient} from "@/lib/callAPI/ServiceReduxCallAPI";
+import { getDataCategoryClient} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { LuArrowUp ,LuArrowDown } from "react-icons/lu";
 import ClickComponent from "@/components/TableList/ui/TdInTable"
 interface PropCategoryTable {

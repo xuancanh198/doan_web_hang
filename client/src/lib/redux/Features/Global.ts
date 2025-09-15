@@ -4,10 +4,12 @@ import {LANG_DEFAULT} from "@/constants/Global";
 
 interface ExampleState {
   lang: String;
+  routerRedirectTo : String
 }
 
 const initialState: ExampleState = {
   lang: Cookies.get("lang") ?? LANG_DEFAULT,
+  routerRedirectTo  : "",
 };
 
 export const exampleSlice = createSlice({
@@ -17,9 +19,11 @@ export const exampleSlice = createSlice({
      setLang(state, action) {
         state.lang = action.payload
     },
-    
+     setRouterRedirectTo(state, action) {
+        state.routerRedirectTo = action.payload
+    },
   },
 });
 
-export const {setLang } = exampleSlice.actions;
+export const {setLang, setRouterRedirectTo } = exampleSlice.actions;
 export default exampleSlice.reducer;

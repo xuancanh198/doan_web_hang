@@ -12,5 +12,9 @@ class ProductInventoryLogs extends Model
     protected $id = TablesEnum::PRIMARY_ID;
 
     protected $fillable = TablesEnum::PRODUCT_Inventory_COLUMN;
-    
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, foreignKey: 'product_id');
+    }
 }

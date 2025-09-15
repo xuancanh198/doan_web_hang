@@ -7,6 +7,8 @@ use App\Services\Functions\Execute\Product\Product\ProductServiceInterface;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductImportExportRequest;
 use App\Http\Resources\ProductAdminResource;
+use App\Http\Resources\ProductAdminImportExportResource;
+use App\Http\Resources\ProductAdminLogResource;
 
 class ProductController extends Controller
 {
@@ -37,7 +39,7 @@ class ProductController extends Controller
     {
         return $this->handleRequest(function () use ($id, $request) {
             $result = $this->service->updateAction($id, $request);
-            return $this->returnResponseMessage($result ? "success" : "fail", 'updateAction');
+            return $this->returnResponseMessage($result['status'] ? "success" : "fail", 'updateAction', $result['typeFullText']);
         });
     }
 
@@ -45,6 +47,22 @@ class ProductController extends Controller
     {
         return $this->handleRequest(function () use ($id) {
             $result = $this->service->findByView($id);
+            return $this->returnDataBase($result);
+        });
+    }
+
+    public function showImportExport($id)
+    {
+        return $this->handleRequest(function () use ($id) {
+            $result = $this->service->findByViewImportExport($id);
+            return $this->returnDataBase($result);
+        });
+    }
+
+    public function showLog($id)
+    {
+        return $this->handleRequest(function () use ($id) {
+            $result = $this->service->findByViewLog($id);
             return $this->returnDataBase($result);
         });
     }
@@ -64,7 +82,7 @@ class ProductController extends Controller
     {
         return $this->handleRequest(function () use ($request) {
             $result = $this->service->getListLog($request);
-            return $this->returnResponseBase(ProductAdminResource::class, $request, $result);
+            return $this->returnResponseBase(ProductAdminLogResource::class, $request, $result);
         });
     }
 
@@ -72,7 +90,7 @@ class ProductController extends Controller
     {
         return $this->handleRequest(function () use ($request) {
             $result = $this->service->getListImportExport($request);
-            return $this->returnResponseBase(ProductAdminResource::class, $request, $result);
+            return $this->returnResponseBase(ProductAdminImportExportResource::class, $request, $result);
         });
     }
 
@@ -81,6 +99,25 @@ class ProductController extends Controller
         return $this->handleRequest(function () use ($request) {
             $result = $this->service->createImportExportAction($request);
             return $this->returnResponseMessage($result ? "success" : "fail", 'createAction');
+        });
+    }
+
+    public function updateImportExport($id, ProductImportExportRequest $request)
+    {
+        return $this->handleRequest(function () use ($id, $request) {
+            $result = $this->service->updateImportExportAction($id, $request);
+            return $this->returnResponseMessage($result ? "success" : "fail", 'updateAction');
+        });
+    }
+
+    public function destroyImportExport($id = null, ProductImportExportRequest $request)
+    {
+        if ($id === null) {
+            $id = $request->id;
+        }
+        return $this->handleRequest(function () use ($id) {
+            $result = $this->service->deleteAction($id);
+            return $this->returnResponseMessage($result ? "success" : "fail", 'deleteAction');
         });
     }
 }

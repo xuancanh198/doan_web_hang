@@ -11,9 +11,9 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { updateBanner } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { updateBanner } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { getBannerPositionSystem } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { getBannerPositionSystem } from "@/lib/callAPI/admin/ServiceReduxCallAPI"
 import DatePicker from 'react-datepicker';
 import {  useDispatch } from 'react-redux';
 import { AppDispatch } from "@/lib/redux/store";

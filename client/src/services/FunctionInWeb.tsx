@@ -1,4 +1,4 @@
-import { CATEGORY_MANAGE, AUTHOR_MANAGE, PUBLISHER_MANAGE, SERIES_MANAGE, SETTING_MANAGE, PERMISSTION_MANAGE, ACTION_MANAGE, PERMISSTION_DETAIL_MANAGE, PRODUCT_MANAGE, ROLE_MANAGE, STAFF_MANAGE,PRODUCT_IMPORT_EXPORT_MANAGE ,BANNER_MANAGE, ACTIVE_LOG_MANAGE} from "@/constants/PageManageInAdmin"
+import { CATEGORY_MANAGE, AUTHOR_MANAGE, PUBLISHER_MANAGE, SERIES_MANAGE, SETTING_MANAGE, PERMISSTION_MANAGE, ACTION_MANAGE, PERMISSTION_DETAIL_MANAGE, PRODUCT_MANAGE, ROLE_MANAGE, STAFF_MANAGE,PRODUCT_IMPORT_EXPORT_MANAGE ,BANNER_MANAGE, ACTIVE_LOG_MANAGE, PRODUCT_LOG_MANAGE} from "@/constants/PageManageInAdmin"
 export const getNamePageManageByQueryInAdmin = (query: string | null) => {
     switch (query) {
         case CATEGORY_MANAGE:
@@ -29,6 +29,8 @@ export const getNamePageManageByQueryInAdmin = (query: string | null) => {
             return BANNER_MANAGE
          case ACTIVE_LOG_MANAGE:
             return 'logActive';
+         case PRODUCT_LOG_MANAGE:
+            return 'productLog';
     }
 
 }

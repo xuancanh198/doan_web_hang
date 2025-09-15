@@ -22,7 +22,7 @@ import {
   getDataPublisherClient,
   getDataSeriesClient,
   getLangSystem,
-} from '@/lib/callAPI/ServiceReduxCallAPI'
+} from '@/lib/callAPI/admin/ServiceReduxCallAPI'
 
 import { FILTER_TYPE_COLUMN } from '@/constants/QueryFilter'
 

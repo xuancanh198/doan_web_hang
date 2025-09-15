@@ -11,6 +11,8 @@ import RoleView from '@/components/TableList/Form/View/RoleView';
 import StaffView from '@/components/TableList/Form/View/StaffView';
 import BannerView from '@/components/TableList/Form/View/BannerView';
 import LogActiveView from '@/components/TableList/Form/View/LogActiveView';
+import LogProductView from '@/components/TableList/Form/View/LogProduct';
+import ImportExportProductView from '@/components/TableList/Form/View/ImportExportProduct';
 
 import {
   CATEGORY_MANAGE,
@@ -25,7 +27,9 @@ import {
   ROLE_MANAGE,
   STAFF_MANAGE,
   BANNER_MANAGE,
-  ACTIVE_LOG_MANAGE
+  ACTIVE_LOG_MANAGE,
+  PRODUCT_IMPORT_EXPORT_MANAGE,
+  PRODUCT_LOG_MANAGE
 } from '@/constants/PageManageInAdmin';
 
 type Props = {
@@ -61,6 +65,10 @@ export default function DynamicViewForm({ query, data }: Props) {
       return <BannerView data={data} />;
     case ACTIVE_LOG_MANAGE:
       return <LogActiveView data={data} />;
+      case PRODUCT_IMPORT_EXPORT_MANAGE:
+      return <ImportExportProductView data={data} />;
+    case PRODUCT_LOG_MANAGE:
+      return <LogProductView data={data} />;
     default:
       return <div className="text-gray-500">Không tìm thấy form phù hợp</div>;
   }

@@ -1,10 +1,12 @@
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT, FALSE_VALUE_DEFAULT } from "@/constants/DataDefault";
-import { callListBase, createBase, updateBase, findBase, deleteBase } from "@/lib/callAPI/BaseCallAPIRedux";
+import { callListBaseClient, createBase, updateBase, deleteBase, methodPostBase } from "@/lib/callAPI/BaseCallAPIClient";
 import { setData,setBannerPosition, setListCategoryAll ,setListPublisherAll, setListAuthorAll, setTotal, setLangsSystem} from "@/lib/redux/Features/Crud";
 import { Dispatch } from 'redux';
 import { toast } from 'react-toastify';
 import APILink from "@/connect/APILink";
 import { AppDispatch } from '@/lib/redux/store'; 
+import { setCookie } from "cookies-next";
+import { setRouterRedirectTo } from "@/lib/redux/Features/Global";
 export const getDataCategoryClient = (
     page: number = PAGE_DEFAULT,
     limit: number = LIMIT_DEFAULT,
@@ -18,7 +20,7 @@ export const getDataCategoryClient = (
     passIntoCorrespondingArray :boolean = FALSE_VALUE_DEFAULT,
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/category', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/category', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }else if(returnData === false && passIntoCorrespondingArray === true){
@@ -31,24 +33,8 @@ export const getDataCategoryClient = (
     }
 };
 
-export async function getDataCategoryServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/category', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createCategory= (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/category', data))
-}
-export async function findIdCategory(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/category/${id}`, isServerCall)
 }
 
 export  const  updateCategory = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -82,7 +68,7 @@ export const getDataAuthorClient = (
 
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/author', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/author', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }else if(returnData === false && passIntoCorrespondingArray === true){
@@ -95,25 +81,10 @@ export const getDataAuthorClient = (
     }
 };
 
-export async function getDataAuthorServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/author', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createAuthor= (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/author', data))
 }
-export async function findIdAuthor(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/author/${id}`, isServerCall)
-}
+
 
 export  const  updateAuthor = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
     return await dispatch(updateBase(`admin/product/author/${id}`, data, isFormData))
@@ -145,7 +116,7 @@ export const getDataPublisherClient = (
     passIntoCorrespondingArray :boolean = FALSE_VALUE_DEFAULT,
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/publisher', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/publisher', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -159,25 +130,11 @@ export const getDataPublisherClient = (
     }
 };
 
-export async function getDataPublisherServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/publisher', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createPublisher= (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/publisher', data))
 }
-export async function findIdPublisher(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/publisher/${id}`, isServerCall)
-}
+
 
 export  const  updatePublisher = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
     return await dispatch(updateBase(`admin/product/publisher/${id}`, data, isFormData))
@@ -209,7 +166,7 @@ export const getDataSeriesClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/series', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/series', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -220,24 +177,8 @@ export const getDataSeriesClient = (
     }
 };
 
-export async function getDataSeriesServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/series', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createSeries= (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/series', data))
-}
-export async function findIdSeries(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/series/${id}`, isServerCall)
 }
 
 export  const  updateSeries = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -268,7 +209,7 @@ export const getDataSettingClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/system/setting', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/system/setting', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -279,26 +220,9 @@ export const getDataSettingClient = (
     }
 };
 
-export async function getDataPermisstionServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/permisstion/permisstion', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createPermisstion = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/permisstion/permisstion', data))
 }
-export async function findIdPermisstion(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/permisstion/permisstion/${id}`, isServerCall)
-}
-
 export  const  updatePermisstion = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
     return await dispatch(updateBase(`admin/permisstion/permisstion/${id}`, data))
 }
@@ -327,7 +251,7 @@ export const getDataPermisstionClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/permisstion/permisstion', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/permisstion/permisstion', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -338,24 +262,9 @@ export const getDataPermisstionClient = (
     }
 };
 
-export async function getDataSettingServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/system/setting', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createSetting= (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/system/setting', data))
-}
-export async function findIdSetting(id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/system/setting/${id}`, isServerCall)
 }
 
 export  const  updateSetting = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -387,7 +296,7 @@ export const getDataActionClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/permisstion/action', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/permisstion/action', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -398,24 +307,9 @@ export const getDataActionClient = (
     }
 };
 
-export async function getDataActionServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/permisstion/action', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createAction = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/permisstion/action', data))
-}
-export async function findIdAction (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/permisstion/action/${id}`, isServerCall)
 }
 
 export  const  updateAction = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -449,7 +343,7 @@ export const getDataPermisstionDetailClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/permisstion/permisstion-detail', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/permisstion/permisstion-detail', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -460,24 +354,8 @@ export const getDataPermisstionDetailClient = (
     }
 };
 
-export async function getDataPermisstionDetailServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/permisstion/permisstion-detail', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createPermisstionDetail = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/permisstion/permisstion-detail', data))
-}
-export async function findIdPermisstionDetail (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/permisstion/permisstion-detail/${id}`, isServerCall)
 }
 
 export  const  updatePermisstionDetail= (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -524,7 +402,7 @@ export const getDataProductClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/product', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/product', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -535,24 +413,9 @@ export const getDataProductClient = (
     }
 };
 
-export async function getDataProductServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/product', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createProduct = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/product', data))
-}
-export async function findIdProduct (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/product/${id}`, isServerCall)
 }
 
 export  const  updateProduct = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -584,7 +447,7 @@ export const getDataRoleClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/staff/role', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/staff/role', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -595,24 +458,8 @@ export const getDataRoleClient = (
     }
 };
 
-export async function getDataRoleServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/staff/role', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createRole = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/staff/role', data))
-}
-export async function findIdRole (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/staff/role/${id}`, isServerCall)
 }
 
 export  const  updateRole = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -644,7 +491,7 @@ export const getDataStaffClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/staff/staff', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/staff/staff', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -655,24 +502,8 @@ export const getDataStaffClient = (
     }
 };
 
-export async function getDataStaffServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/staff/staff', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
 export const  createStaff = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/staff/staff', data))
-}
-export async function findIdStaff (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/staff/staff/${id}`, isServerCall)
 }
 
 export  const  updateStaff= (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -703,7 +534,7 @@ export const getDataImportExportClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/product/get-import-export', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/product/get-import-export', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -728,7 +559,7 @@ export const getDataBannerClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/system/banner', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/system/banner', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -739,24 +570,9 @@ export const getDataBannerClient = (
     }
 };
 
-export async function getDataBannerServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/system/banner', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createBanner = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/system/banner', data))
-}
-export async function findIdBanner (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/system/banner/${id}`, isServerCall)
 }
 
 export  const  updateBanner = (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
@@ -788,7 +604,7 @@ export const getDataLogActiveClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/system/log-active', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/system/log-active', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -799,23 +615,6 @@ export const getDataLogActiveClient = (
     }
 };
 
-export async function getDataLogActiveServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/system/log-active', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
-
-export async function findIdLogActive (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/system/log-active/${id}`, isServerCall)
-}
 
 export const deleteLogActive = (id: number | string | number[], isDeleteMuti:boolean = true) => async (dispatch: AppDispatch) => {
     try {
@@ -844,7 +643,7 @@ export const getDataProductImportExportClient = (
     returnData :boolean = FALSE_VALUE_DEFAULT
 ) => async (dispatch: Dispatch) => {
     try {
-        const data = await callListBase('admin/product/product/get-import-export', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        const data = await callListBaseClient('admin/product/product/get-import-export', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
         if(returnData === true) {
             return data;
         }
@@ -855,32 +654,17 @@ export const getDataProductImportExportClient = (
     }
 };
 
-export async function getDataProductImportExportServer(
-    isServerCall = FALSE_VALUE_DEFAULT,
-    page: number = PAGE_DEFAULT,
-    limit: number = LIMIT_DEFAULT,
-    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
-    isSelectAll = FALSE_VALUE_DEFAULT,
-    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
-    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
-    filterBase64: string | null = NULL_VALUE_DEFAULT,
-) {
-    return await callListBase('admin/product/product/get-import-export', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBase64, isServerCall)
-}
+
 export const  createProductImportExport = (data: object | FormData)=> async (dispatch: AppDispatch) => {
     return await dispatch(createBase('admin/product/product/create-import-export', data))
 }
-export async function findIdProductImportExport (id: number | string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-    return await findBase(`admin/product/product/get-import-export/${id}`, isServerCall)
-}
 
 export  const  updateProductImportExport= (id: number, data: object, isFormData: boolean = false) => async (dispatch: AppDispatch) =>  {
-    return await dispatch(updateBase(`admin/product/product/get-import-export/${id}`, data, isFormData))
+    return await dispatch(updateBase(`admin/product/product/update-import-export/${id}`, data, isFormData))
 }
 export const deleteProductImportExport = (id: number | string | number[], isDeleteMuti:boolean = true) => async (dispatch: AppDispatch) => {
     try {
-        const data =isDeleteMuti ?await dispatch(deleteBase(`admin/product/product/get-import-export/${`?id=${id}`}`) ): await dispatch(deleteBase(`admin/product/product/get-import-export/${id}`));
+        const data =isDeleteMuti ?await dispatch(deleteBase(`admin/product/product/delete-import-export/${`?id=${id}`}`) ): await dispatch(deleteBase(`admin/product/product/delete-import-export/${id}`));
 
         if (data?.status === 'success') {
             await dispatch(getDataStaffClient());
@@ -890,3 +674,48 @@ export const deleteProductImportExport = (id: number | string | number[], isDele
         console.error("Error deleting series:", error);
     }
 };
+
+
+
+export const getDataProductLogClient = (
+    page: number = PAGE_DEFAULT,
+    limit: number = LIMIT_DEFAULT,
+    search: Record<string, any> | null = NULL_VALUE_DEFAULT,
+    filter: Record<string, any> | null = NULL_VALUE_DEFAULT,
+    isSelectAll = FALSE_VALUE_DEFAULT,
+    timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
+    queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
+    filterBaseDecode: string | null = NULL_VALUE_DEFAULT,
+    returnData :boolean = FALSE_VALUE_DEFAULT
+) => async (dispatch: Dispatch) => {
+    try {
+        const data = await callListBaseClient('admin/product/product/get-log', page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
+        if(returnData === true) {
+            return data;
+        }
+        dispatch(setData(data?.result?.data));
+        dispatch(setTotal(data?.result?.total));
+    } catch (error) {
+        console.error("Error fetching series data:", error);
+    }
+};
+
+
+export const  loginAdmin = (data: object) => async (dispatch: Dispatch) =>  {
+    const result = await methodPostBase(`admin/login`, data);
+    if(result?.status === "success") {
+      
+        setCookie("admin_token", result.token, {
+        path: "/",
+        maxAge: 60 * 60 * 24,
+        });
+
+        setCookie("admin_user", JSON.stringify(result.user), {
+        path: "/",
+        maxAge: 60 * 60 * 24,
+        });
+        dispatch(setRouterRedirectTo("/admin/"));
+    }
+      toast.success(result.message || "Đăng nhập thành công!");
+    return ;
+}

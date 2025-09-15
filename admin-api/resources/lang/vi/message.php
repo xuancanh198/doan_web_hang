@@ -136,7 +136,9 @@ return [
     "updateSuccess" => "Cập nhật thành công",
     "permisstion_detail" => "Quyền chi tiết",
     'idLogActive' => 'Mã ghi lịch sử hệ thống',
+    'insufficient_quantity' => 'Không thể thực hiện do số lượng trong kho không đủ',
     'min_numeric' => ':attribute phải có giá trị ít nhất :min.',
     "updateFail" => "Cập nhật thất bại",
-    "acctionMessage" => ":attribute :status"
+    "acctionMessage" => ":attribute :status",
+    "loginFail" => 'Đăng nhập thất bại'
 ];

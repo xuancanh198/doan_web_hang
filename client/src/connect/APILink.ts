@@ -8,25 +8,16 @@ const APILink = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL+ "/api/",
 });
 
-APILink.interceptors.request.use(
-  (config) => {
-    // const isAdmin = window.location.pathname.includes("admin");
-    // let token;
-
-    // if (isAdmin) {
-    //   token = Cookies.get("token_admin");
-    // } else {
-    //   token = Cookies.get("token_user") || Cookies.get("token_otp_user");
-    // }
-
-    // if (token) {
-    //   config.headers["Authorization"] = `Bearer ${token}`;
-    // }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
+APILink.interceptors.request.use((config) => {
+  let token = null;
+  if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
+     token = Cookies.get("admin_token"); // lấy token admin
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
 APILink.interceptors.response.use(
   (response) => response,
   (error) => {

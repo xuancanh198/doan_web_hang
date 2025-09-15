@@ -9,8 +9,8 @@ export const FALSE_VALUE_DEFAULT : boolean = false;
 export const TIME_Now_VALUE_DEFAULT : string = dayjs().format('YYYY-MM-DD HH:mm:ss');
 export const STATUS_ACTIVE: number = 1;
 export const STATUS_NOT_ACTIVE: number = 0;
-export const IMPORT: string = "import";
-export const EXPORT: string = 'export' ;
+export const IMPORT: string = "IMPORT";
+export const EXPORT: string = 'EXPORT' ;
 
-export const SELL: string = "sell";
-export const RENT: string = 'rent' ;
+export const SELL: string = "SELL";
+export const RENT: string = 'RENT' ;

@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Enums\LabelSystemEnum;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ImportExportTask;
+use App\Models\ImportExportTaskLog;
+use App\Enums\ImportExportEnum;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class  BaseRepository
 {
@@ -153,5 +156,21 @@ class  BaseRepository
         }
 
         return $query->paginate($limit, $columns, 'page', $page);
+    }
+
+    public function importExcelWithTask(
+        $modelClass,
+        $file,
+        array $columns,
+        array $uniqueKeys = [],
+        bool $skipDuplicate = true
+    ) {
+        $task = ImportExportTask::create([
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $file->store('imports'),
+            'type' => ImportExportEnum::TYPE_IMPORT,
+            'model' => $modelClass,
+            'status' => ImportExportEnum::STATUS_PENDING,
+        ]);
     }
 }

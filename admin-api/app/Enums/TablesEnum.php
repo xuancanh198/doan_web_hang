@@ -35,11 +35,36 @@ enum TablesEnum
 
     const LOGACTIVE_TABLE = 'activity_log';
 
+    const ARTICLES_TABLE = 'articles';
+
     const CATEGORY_COLUMN = ['name', 'code', 'status', 'parent_id', 'image', 'description', 'created_at', 'updated_at'];
 
     const LOGACTIVE_COLUMN = ['log_name', 'description', 'subject_type', 'event', 'subject_id', 'causer_type', 'causer_id', 'properties', 'batch_uuid', 'created_at', 'updated_at'];
 
+    const IMPORT_EXPORT_TASKS_TABLE = 'import_export_tasks';
+    const IMPORT_EXPORT_TASKS_COLUMN = [
+        'file_name',
+        'file_path',
+        'type',
+        'model',
+        'status',
+        'total_rows',
+        'processed_rows',
+        'error_rows',
+        'created_at',
+        'updated_at',
+    ];
 
+    // Bảng Import/Export Task Logs
+    const IMPORT_EXPORT_TASK_LOGS_TABLE = 'import_export_task_logs';
+    const IMPORT_EXPORT_TASK_LOGS_COLUMN = [
+        'task_id',
+        'type',
+        'status',
+        'message',
+        'created_at',
+        'updated_at',
+    ];
     const PERMISSTIONDETAIL_COLUMN_HIDDEN = ['permisstion_id', 'action_id'];
     const PERMISSTIONDETAIL_COLUMN = ['name', 'code', 'status', 'url', 'description', 'created_at', 'updated_at'];
 
@@ -63,7 +88,10 @@ enum TablesEnum
     const PRODUCT_ImportExports_COLUMN = ['product_id', 'code', 'action', 'mode', 'quantity', 'import_price', 'expected_sell_price', 'expected_rent_price', 'actual_price_at_that_time', 'note', 'created_at', 'updated_at'];
     const ROLE_COLUMN = ['name', 'code', 'status', 'description', 'created_at', 'updated_at'];
 
-    const STAFF_COLUMN = ['username', 'password', 'code', 'fullname', 'email', 'phone', 'status', 'address', 'describe', 'avatar', 'permisstion_detail', 'created_at', 'updated_at'];
+    const STAFF_COLUMN = ['username', 'password', 'code', 'fullname', 'email', 'phone', 'status', 'address', 'description', 'avatar', 'permisstion_detail', 'created_at', 'updated_at'];
+
+    const ARTICLES_COLUMN = ['product_id', 'staff_id', 'user_id',  'type', 'title', 'content', 'review_count', 'like_count', 'views_count','created_at', 'updated_at'];
+
 
     public const BANNER_TABLE = 'banners';
     public const BANNER_COLUMN = [

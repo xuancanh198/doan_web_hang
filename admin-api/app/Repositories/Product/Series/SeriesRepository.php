@@ -74,7 +74,7 @@ class SeriesRepository extends BaseRepository implements SeriesRepositoryInterfa
     public function getListRepo(array $params = [])
     {
         return $this->queryBase(
-            $this->model->isExist()->getStatus(),
+            $this->model->isExist()->getActive(),
             [
                 'page'          => $params['page'] ?? BaseRequestAttribute::PAGE_DEFAULT,
                 'limit'         => $params['limit'] ??  BaseRequestAttribute::LIMIT_DEFAULT,

@@ -2,8 +2,8 @@ import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT, FALSE_VALUE_DEFAULT } 
 import APILink from "@/connect/APILink";
 import { setLoading } from "@/lib/redux/Features/Crud";
 import { AppDispatch } from '@/lib/redux/store';
-import {callListCore, findCore, createCore, updateCore, callListClientCore} from "@/lib/callAPI/CoreAPIConnect";
-export async function callListBase(
+import { callListCoreClient, createCore, updateCore, callListClientCore, postCore} from "@/lib/callAPI/CoreAPIConnectClient";
+export async function callListBaseClient(
   link: string,
   page: number = PAGE_DEFAULT,
   limit: number = LIMIT_DEFAULT,
@@ -13,15 +13,13 @@ export async function callListBase(
   timeFilterBase64: string | null = NULL_VALUE_DEFAULT,
   queryOrderByBase64: string | null = NULL_VALUE_DEFAULT,
   filterBaseDecode: string | null = NULL_VALUE_DEFAULT,
-  isServerCall: boolean = FALSE_VALUE_DEFAULT
+  isServerCall: boolean = FALSE_VALUE_DEFAULT,
+  isAdmin: boolean = FALSE_VALUE_DEFAULT,
+  dataProp : any = NULL_VALUE_DEFAULT
 ) {
-  return  await callListCore(link, page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode, isServerCall);
+  return  await callListCoreClient(link, page, limit, search, filter, isSelectAll, timeFilterBase64, queryOrderByBase64, filterBaseDecode);
 }
 
-export async function findBase(link: string, isServerCall: boolean = FALSE_VALUE_DEFAULT) {
-  const data = await findCore(link, isServerCall);
-  return data;
-}
 export const createBase = (link: string, data: object) => async (dispatch: AppDispatch) => {
   await dispatch(setLoading(true));
   try {
@@ -76,3 +74,12 @@ export async function callAPIListClient(
   return  await callListClientCore(link, page, limit, search, filter,isServerCall);
 
 }
+
+export async function methodPostBase (link: string, data: object) {
+  try {
+    const result = await postCore(link, data);
+    return result?.data;
+  } catch (error: any) {
+    return error?.response?.data;
+  } 
+};

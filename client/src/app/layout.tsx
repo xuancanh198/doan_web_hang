@@ -1,10 +1,9 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import "@/asset/css/core.css";
-import { SidebarProvider } from "@/context/SidebarContext";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { getLocale, getMessages } from 'next-intl/server';
-import ProgressBar from "@/components/core/progress-bar"
+import { getLocale, getMessages } from "next-intl/server";
+import Providers from "@/app/Providers";
+
 const outfit = Outfit({
   variable: "--font-outfit-sans",
   subsets: ["latin"],
@@ -12,17 +11,18 @@ const outfit = Outfit({
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html lang={locale}>
       <body className={`${outfit.variable} dark:bg-gray-900`}>
-        <ThemeProvider>
-          <ProgressBar/>
-          <SidebarProvider>{children}</SidebarProvider>
-        </ThemeProvider>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

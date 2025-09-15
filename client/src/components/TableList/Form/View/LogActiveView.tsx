@@ -1,14 +1,6 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import Label from "@/components/form/Label";
 import { getTranslations } from 'next-intl/server';
-import Badge from "@/components/ui/badge/Badge";
-import ConvertYYMMDD from "@/components/common/Date/ConvertYYMMDD";
-import TableViewDetailPermisstion from "./TableViewDetailPermisstion";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 interface ViewLogActiveProp {
   data: any;
 }

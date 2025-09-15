@@ -11,7 +11,6 @@ use App\Enums\ColumnTableEnums;
 use Carbon\Carbon;
 use App\Helpers\SlugHelper;
 use App\Enums\ProductTypeQuantityEnums;
-use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
@@ -117,6 +116,27 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $result->find($id);
     }
 
+
+    public function findViewImportExport(
+        int $id,
+        $relationship = [],
+    ) {
+        $result = $this->modelExports;
+        if (count($relationship) > 0) {
+            $result = $result->with($relationship);
+        }
+        return $result->find($id);
+    }
+    public function findViewLog(
+        int $id,
+        $relationship = [],
+    ) {
+        $result = $this->modelLog;
+        if (count($relationship) > 0) {
+            $result = $result->with($relationship);
+        }
+        return $result->find($id);
+    }
     public function getListLog(array $query)
     {
         $page = $query['page'] ?? BaseRequestAttribute::PAGE_DEFAULT;
@@ -129,7 +149,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $filtersBase64 = $query['filtersBase64'] ?? BaseRequestAttribute::DEFAULT_NULL;
         $filterBaseDecode = $query['filterBaseDecode'] ?? BaseRequestAttribute::DEFAULT_NULL;
         $isSelectAll = $query['isSelectAll'] ?? BaseRequestAttribute::DEFAULT_FALSE;
-        $result = $this->getListBaseFun($this->modelLog, $page, $limit, $search, $this->columnSearch, $excel, $typeTime, $start, $end, $filtersBase64, $isSelectAll, $this->columnSearch, $filterBaseDecode);
+        $result = $this->getListBaseFun(
+            $this->modelLog->with('product'),
+            $page,
+            $limit,
+            $search,
+            $this->columnSearch,
+            $excel,
+            $typeTime,
+            $start,
+            $end,
+            $filtersBase64,
+            $isSelectAll,
+            $this->columnSearch,
+            $filterBaseDecode
+        );
         return $result;
     }
 
@@ -145,32 +179,31 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $filtersBase64 = $query['filtersBase64'] ?? BaseRequestAttribute::DEFAULT_NULL;
         $filterBaseDecode = $query['filterBaseDecode'] ?? BaseRequestAttribute::DEFAULT_NULL;
         $isSelectAll = $query['isSelectAll'] ?? BaseRequestAttribute::DEFAULT_FALSE;
-        $result = $this->getListBaseFun($this->modelExports , $page, $limit, $search, $this->columnSearch, $excel, $typeTime, $start, $end, $filtersBase64, $isSelectAll, $this->columnSearch, $filterBaseDecode);
+        $model = $this->modelExports->with('product');
+        $result = $this->getListBaseFun($model, $page, $limit, $search, $this->columnSearch, $excel, $typeTime, $start, $end, $filtersBase64, $isSelectAll, $this->columnSearch, $filterBaseDecode);
         return $result;
     }
 
 
-    public function updateQuantityGeneric(int $id, array $data, string $column, string $dataKey)
+    public function updateQuantityGeneric(int $id, array $data, string $column)
     {
         $model = $this->model->find($id);
         if (!$model) return false;
-
-        $quantity = (int) ($data[$dataKey] ?? 0);
-
-        if ($data['type'] === ProductTypeQuantityEnums::IMPORT) {
-            $model->column += $quantity;
-        } elseif ($data['type'] === ProductTypeQuantityEnums::EXPORT) {
-            $model->column -= $quantity;
+        $quantity = $data['quantity'];
+        if ($data['type'] === ProductTypeQuantityEnums::IMPORT || $data['type'] === ProductTypeQuantityEnums::INCREASE) {
+            $model->{$column} += $quantity;
+        } elseif ($data['type'] === ProductTypeQuantityEnums::EXPORT || $data['type'] === ProductTypeQuantityEnums::DECREASE) {
+            $model->{$column} -= $quantity;
         }
 
         return $this->actionThenReturnBoolOrData($model, true);
     }
 
+
     public function createImportExportData(array $data)
     {
         $this->modelExports->product_id  = $data['product_id'];
         $this->modelExports->code = $data['code'] ?? null;
-        $this->modelExports->action = $data['action'];
         $this->modelExports->type = $data['type'];
         $this->modelExports->mode = $data['mode'];
         $this->modelExports->quantity = $data['quantity'];
@@ -183,6 +216,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->actionThenReturnBoolOrData($this->modelExports, true);
     }
 
+
+    public function updateImportExportData($id, array $data)
+    {
+
+        $model = $this->modelExports->find($id);
+        $model->quantity = $data['quantity'];
+        $model->import_price = $data['import_price'];
+        $model->expected_sell_price = $data['expected_sell_price'];
+        $model->expected_rent_price = $data['expected_rent_price'];
+        $model->actual_price_at_that_time = $data['actual_price_at_that_time'];
+        $model->note = $data['note'];
+        $model->updated_at = Carbon::now();
+
+        return $this->actionThenReturnBoolOrData($model, true);
+    }
 
     public function createLogData(array $data)
     {
@@ -198,14 +246,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->actionThenReturnBoolOrData($this->modelLog, true);
     }
 
-    public function updateQuantityBuyData(int $id, array $data)
+    public function increaseQuantity(int $id, array $data)
     {
-        return $this->updateQuantityGeneric($id, $data, 'buy_quantity', 'buy_quantity');
+        return $this->updateQuantityGeneric($id, $data, 'buy_quantity');
     }
 
-    public function updateQuantityRentData(int $id, array $data)
+    public function decreaseQuantity(int $id, array $data)
     {
-        return $this->updateQuantityGeneric($id, $data, 'rent_quantity', 'rent_quantity');
+        return $this->updateQuantityGeneric($id, $data, 'rent_quantity');
     }
 
     public function getListRepo(array $params = [])
@@ -221,5 +269,31 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'column_search' => $this->columnSearch ?? [],
             ]
         );
+    }
+
+    public function generateUniqueProductCode(): string
+    {
+        do {
+            // 6 ký tự chữ in hoa
+            $letters = '';
+            for ($i = 0; $i < 6; $i++) {
+                $letters .= chr(rand(65, 90)); // ASCII A-Z
+            }
+
+            // 6 số
+            $numbers = str_pad((string) rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+            $code = $letters . $numbers;
+
+            // Check tồn tại trong DB (bảng products, cột code)
+            $exists = $this->model->where('code', $code)->exists();
+        } while ($exists);
+
+        return $code;
+    }
+
+    public function deleteDataImportExport(int|array $id)
+    {
+        return $this->deleteOneOrManyRecord($this->modelExports, $id);
     }
 }

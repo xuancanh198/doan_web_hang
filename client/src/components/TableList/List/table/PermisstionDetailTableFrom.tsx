@@ -12,7 +12,7 @@ import Badge from "../../../ui/badge/Badge";
 import { PermisstionDetailListTable } from "@/constants/Interface";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { deletePermisstionDetail} from "@/lib/callAPI/ServiceReduxCallAPI";
+import { deletePermisstionDetail} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { RootState } from "@/lib/redux/store";

@@ -57,4 +57,14 @@ class CategoryRequest extends BaseRequest
             'id' => trans('message.idCategory'),
         ]));
     }
+    protected function prepareForValidation()
+    {
+        parent::prepareForValidation(); // vẫn giữ logic cha
+
+        if ($this->has('parent_id') && ($this->parent_id === "null" || $this->parent_id === "")) {
+            $this->merge([
+                'parent_id' => null,
+            ]);
+        }
+    }
 }

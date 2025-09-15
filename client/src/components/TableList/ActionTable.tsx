@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 import { useTranslations } from "next-intl";
 import { CATEGORY_MANAGE, AUTHOR_MANAGE, PUBLISHER_MANAGE, SERIES_MANAGE, SETTING_MANAGE, PERMISSTION_MANAGE, ACTION_MANAGE, PERMISSTION_DETAIL_MANAGE, PRODUCT_MANAGE, ROLE_MANAGE, STAFF_MANAGE, BANNER_MANAGE, ACTIVE_LOG_MANAGE, PRODUCT_IMPORT_EXPORT_MANAGE } from "@/constants/PageManageInAdmin"
 import { Column_Created_at } from "@/constants/ColumnBackendQuery";
-import { deleteCategory } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { deleteCategory } from "@/lib/callAPI/admin/ServiceReduxCallAPI"
 import { faPlus, faMagnifyingGlass, faFilter, faRotateLeft, faFileImport, faTrash } from "@fortawesome/free-solid-svg-icons";
 interface TableListProps {
   query?: string | null;
@@ -61,7 +61,7 @@ function ActionTable({ query = null }: TableListProps) {
           case ACTIVE_LOG_MANAGE:
         return "";
       default:
-        return "#";
+        return "";
     }
   }
   const returnLoadPage = () => {

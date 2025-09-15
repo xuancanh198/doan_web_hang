@@ -10,7 +10,7 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { updatePermisstionDetail } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { updatePermisstionDetail } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from "@/lib/redux/store";
@@ -23,7 +23,7 @@ import {
 } from "@/constants/DataDefault";
 import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2';
-import { getDataActionServer, getDataPermisstionServer } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { getDataActionServer, getDataPermisstionServer } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 
 export default function DefaultInputs({ dataDetail }: { dataDetail: any }) {
   const t = useTranslations("ManageInAdmin");

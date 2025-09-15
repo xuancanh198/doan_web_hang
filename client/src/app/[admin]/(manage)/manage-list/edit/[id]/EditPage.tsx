@@ -72,6 +72,10 @@ const componentMap: Record<string, React.ComponentType<FormComponentProps>> = {
   [BANNER_MANAGE]: dynamic(() => import('@/components/TableList/Form/Edit/BannerForm'), {
     loading: () => <LoadingSpinner />,
   }),
+  [PRODUCT_IMPORT_EXPORT_MANAGE]: dynamic(() => import('@/components/TableList/Form/Edit/ProductFormImportExport'), {
+    loading: () => <LoadingSpinner />,
+  }),
+  
 };
 
 export default function DynamicEditForm({ query, dataDetail }: Props) {

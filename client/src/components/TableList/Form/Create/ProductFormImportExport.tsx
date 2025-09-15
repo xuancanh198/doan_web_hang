@@ -11,9 +11,9 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createProductImportExport } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createProductImportExport } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { getDataCategoryClient, getDataProductClient, getDataPublisherClient, getLangSystem } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { getDataCategoryClient, getDataProductClient, getDataPublisherClient, getLangSystem } from "@/lib/callAPI/admin/ServiceReduxCallAPI"
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT } from "@/constants/DataDefault";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from "@/lib/redux/store";
@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 import { setListProductAll } from "@/lib/redux/Features/Crud";
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { toast } from "react-toastify";
 
 
 export default function DefaultInputs() {
@@ -30,6 +31,18 @@ export default function DefaultInputs() {
   const router = useRouter();
   const listProductAll = useSelector((state: RootState) => state.crud.listProductAll);
   const [check, setCheck] = useState<boolean>(false);
+   const [formData, setFormData] = useState({
+          type: IMPORT.toString(),
+          mode: RENT.toString(),
+          quantity: 0,
+          import_price: 0,
+          action: IMPORT.toString(),
+          expected_sell_price: 0,
+          expected_rent_price: "",
+          actual_price_at_that_time: "",
+          product_id: 3,
+          description: null,
+        });
   const productImportExportSchema = Yup.object().shape({
     //   code: Yup.string()
     //   .required(t('Validation.RequiredField', { field: t('productImportExport.code') }))
@@ -42,8 +55,8 @@ export default function DefaultInputs() {
     //   .max(255, t('Validation.MaxLength', { field: t('productImportExport.name'), max: 255 })),
 
 
-    description: Yup.string()
-      .max(5000, t('Validation.MaxLength', { field: t('productImportExport.description'), max: 5000 })),
+    // description: Yup.string()
+    //   .max(5000, t('Validation.MaxLength', { field: t('productImportExport.description'), max: 5000 })),
 
   });
 
@@ -71,6 +84,10 @@ export default function DefaultInputs() {
         value: item?.id,
         label: item?.name,
       }))));
+      setFormData((prev) => ({
+          ...prev,
+          product_id: resCategory?.result?.[0].id, // giá trị mới
+        }));
     };
 
     callAPiDataAll();
@@ -88,6 +105,10 @@ export default function DefaultInputs() {
 
 
   const createData = async (values: any, resetForm: () => void) => {
+    if(values?.product_id === 0) {
+        toast.error("Vui lòng chọn sản phẩm trước khi thêm!");
+      return ;
+    }
     const data = await dispatch(createProductImportExport(values));
     if (data?.status === "success") {
       const result = await Swal.fire({
@@ -112,17 +133,8 @@ export default function DefaultInputs() {
   return (
     <ComponentCard title={t('Base.CreateTitle', { field: t('Page.productImportExport') })}>
       <Formik
-        initialValues={{
-          type: IMPORT.toString(),
-          mode: RENT.toString(),
-          quantity: 0,
-          import_price: 0,
-          expected_sell_price: 0,
-          expected_rent_price: "",
-          actual_price_at_that_time: "",
-          product_id: 0,
-          note: null,
-        }}
+      enableReinitialize   
+        initialValues={formData}
         validationSchema={productImportExportSchema}
         onSubmit={(values, { resetForm }) => createData(values, resetForm)}
       >
@@ -136,7 +148,10 @@ export default function DefaultInputs() {
                     value={values.type}
                     options={types}
                     placeholder={t('Category.changeTextPlaceholder', { field: t('Category.status') })}
-                    onChange={(val: string | number) => setFieldValue("type", val)}
+                     onChange={(val: string | number) => {
+                      setFieldValue("type", val);
+                      setFieldValue("action", val);
+                    }}
                     className="dark:bg-dark-900"
                   />
                   <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
@@ -148,20 +163,20 @@ export default function DefaultInputs() {
                 </div>
               </div>
               <div className="col-span-12 md:col-span-6 xl:col-span-4">
-                <Label>{t('productImportExport.type')}</Label>
+                <Label>{t('Page.product')}</Label>
                 <div className="relative">
                   <Select
                     value={values.product_id}
                     options={listProductAll}
                     placeholder={t('Category.changeTextPlaceholder', { field: t('Category.status') })}
-                    onChange={(val: string | number) => setFieldValue("type", val)}
+                    onChange={(val: string | number) => setFieldValue("product_id", val)}
                     className="dark:bg-dark-900"
                   />
                   <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
                     <ChevronDownIcon />
                   </span>
-                  {touched.type && errors.type && (
-                    <p className="text-red-500 text-sm mt-1.5">{errors.type}</p>
+                  {touched.product_id && errors.product_id && (
+                    <p className="text-red-500 text-sm mt-1.5">{errors.product_id}</p>
                   )}
                 </div>
               </div>

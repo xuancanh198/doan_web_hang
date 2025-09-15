@@ -49,8 +49,9 @@ class BaseRequest extends FormRequest
         }
         return $messages;
     }
-    public function prepareForValidation()
+    protected  function prepareForValidation()
     {
+        parent::prepareForValidation();
         $data = [];
         if ($this->isMethod('put') || $this->isMethod('delete')) {
             $data['id'] =  $this->route('id');

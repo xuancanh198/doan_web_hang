@@ -11,4 +11,8 @@ interface  ProductServiceInterface extends BaseServicesInterface
 
     public function getListImportExport($request);
     public function getListService($request);
+    public function updateImportExportAction($id, $request);
+    public function findByViewLog($id);
+
+    public function findByViewImportExport($id);
 }

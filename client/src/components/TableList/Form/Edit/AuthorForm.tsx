@@ -11,9 +11,9 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { updateAuthor } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { updateAuthor } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { getDataAuthorServer } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { getDataAuthorServer } from "@/lib/callAPI/admin/ServiceReduxCallAPI"
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT, FALSE_VALUE_DEFAULT } from "@/constants/DataDefault";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch  } from "@/lib/redux/store";

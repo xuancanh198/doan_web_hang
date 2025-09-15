@@ -23,11 +23,10 @@ class ProductImportExportRequest extends BaseRequest
             $rule = [
                 'product_id' => 'required|integer|exists:product,id',
                 'code' => 'nullable|string|min:5|max:60',
-                'action' => 'required|string|in:BUY,SELL,RENT,RETURN',
-                'type' => 'required|string|in:import,export',
+                'action' => 'required|string|in:BUY,SELL,RENT,RETURN,IMPORT,EXPORT',
+                'type' => 'required|string|in:IMPORT,EXPORT',
                 'mode' => 'nullable|string|max:255',
                 'quantity' => 'required|integer|min:1',
-
                 'import_price' => 'nullable|numeric|min:0',
                 'expected_sell_price' => 'nullable|numeric|min:0',
                 'expected_rent_price' => 'nullable|numeric|min:0',
@@ -37,12 +36,12 @@ class ProductImportExportRequest extends BaseRequest
             ];
 
             if ($this->isMethod('put')) {
-                $rule = array_merge($rule, $this->getMethodIdDeleteAndUpdate('product'));
+                $rule = array_merge($rule, $this->getMethodIdDeleteAndUpdate('product_import_exports'));
             }
         } elseif ($this->isMethod('get')) {
             $rule = $this->getMethodGet();
         } elseif ($this->isMethod('delete')) {
-            $rule = $this->checkIdMethodDelete('product', $this->id);
+            $rule = $this->checkIdMethodDelete('product_import_exports', $this->id);
         }
         return $rule;
     }

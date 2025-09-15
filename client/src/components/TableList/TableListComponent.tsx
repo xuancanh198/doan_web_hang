@@ -13,14 +13,15 @@ import LoadingSpinner from '../core/LoadingSpinner';
 import {
   CATEGORY_MANAGE, AUTHOR_MANAGE, PUBLISHER_MANAGE, SERIES_MANAGE, SETTING_MANAGE,
   PERMISSTION_MANAGE, ACTION_MANAGE, PERMISSTION_DETAIL_MANAGE, PRODUCT_MANAGE,
-  ROLE_MANAGE, STAFF_MANAGE, BANNER_MANAGE, ACTIVE_LOG_MANAGE
+  ROLE_MANAGE, STAFF_MANAGE, BANNER_MANAGE, ACTIVE_LOG_MANAGE, PRODUCT_IMPORT_EXPORT_MANAGE, PRODUCT_LOG_MANAGE
 } from "@/constants/PageManageInAdmin";
 
 import {
   getDataCategoryClient, getDataAuthorClient, getDataPublisherClient, getDataSeriesClient,
   getDataSettingClient, getDataPermisstionClient, getDataActionClient, getDataPermisstionDetailClient,
-  getDataProductClient, getDataRoleClient, getDataStaffClient, getDataBannerClient, getDataLogActiveClient
-} from "@/lib/callAPI/ServiceReduxCallAPI";
+  getDataProductClient, getDataRoleClient, getDataStaffClient, getDataBannerClient, getDataLogActiveClient, getDataProductImportExportClient,
+  getDataProductLogClient
+} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 
 // ----------------- COMPONENT MAP -----------------
 const componentMap: Record<string, any> = {
@@ -33,6 +34,8 @@ const componentMap: Record<string, any> = {
   [ACTION_MANAGE]: dynamic(() => import('./List/table/ActionTableFrom'), { loading: () => <LoadingSpinner /> }),
   [PERMISSTION_DETAIL_MANAGE]: dynamic(() => import('./List/table/PermisstionDetailTableFrom'), { loading: () => <LoadingSpinner /> }),
   [PRODUCT_MANAGE]: dynamic(() => import('./List/table/ProductTableFrom'), { loading: () => <LoadingSpinner /> }),
+  [PRODUCT_LOG_MANAGE]: dynamic(() => import('./List/table/ProductTableFromLog'), { loading: () => <LoadingSpinner /> }),
+  [PRODUCT_IMPORT_EXPORT_MANAGE]: dynamic(() => import('./List/table/ProductTableFromImportExport'), { loading: () => <LoadingSpinner /> }),
   [ROLE_MANAGE]: dynamic(() => import('./List/table/RoleTableFrom'), { loading: () => <LoadingSpinner /> }),
   [STAFF_MANAGE]: dynamic(() => import('./List/table/StaffTableFrom'), { loading: () => <LoadingSpinner /> }),
   [BANNER_MANAGE]: dynamic(() => import('./List/table/BannerTableFrom'), { loading: () => <LoadingSpinner /> }),
@@ -50,10 +53,12 @@ const fetchMap: Record<string, any> = {
   [ACTION_MANAGE]: getDataActionClient,
   [PERMISSTION_DETAIL_MANAGE]: getDataPermisstionDetailClient,
   [PRODUCT_MANAGE]: getDataProductClient,
+  [PRODUCT_IMPORT_EXPORT_MANAGE]: getDataProductImportExportClient,
+  [PRODUCT_LOG_MANAGE]: getDataProductLogClient,
   [ROLE_MANAGE]: getDataRoleClient,
   [STAFF_MANAGE]: getDataStaffClient,
   [BANNER_MANAGE]: getDataBannerClient,
-   [ACTIVE_LOG_MANAGE]: getDataLogActiveClient,
+  [ACTIVE_LOG_MANAGE]: getDataLogActiveClient,
 };
 
 // ----------------- PROPS -----------------

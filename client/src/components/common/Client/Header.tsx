@@ -1,6 +1,9 @@
 import React from 'react'
-
-function Header() {
+import {getDataCategoryServer} from "@/lib/callAPI/user/ServerServiceAPI"
+import Link from 'next/link';
+async function Header() {
+  const data = await getDataCategoryServer();
+  console.log(data?.result?.data)
   return (
     <div className="bg-white">
   <div className="border py-3 px-6">
@@ -64,14 +67,11 @@ function Header() {
       </div>
 
       <div className="flex gap-x-8">
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Best seller</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">New Releases</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Books</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Computers</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Fashion</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Health</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Pharmacy</span>
-        <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Toys & Games</span>
+        {data?.result?.data?.map((item:any , index :number)=>{
+       return(
+         <Link href={`/category/${item?.slug}`} key={index} className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">{item?.name}</Link>
+       )
+        })} 
       </div>
 
       <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Becoma a seller</span>

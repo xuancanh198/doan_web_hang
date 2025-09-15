@@ -27,8 +27,25 @@
             }
         },
         "ManageInAdmin": {
+            "auth" : {
+                "emailInvalid": "Email không hợp lệ",
+                "emailRequired": "Vui lòng nhập email",
+                 "usenameInvalid": "Tên đăng nhập không hợp lệ",
+                "passwordMin": "Mật khẩu phải có ít nhất {min} ký tự",
+                "passwordRequired": "Vui lòng nhập mật khẩu",
+                "title": "Đăng nhập",
+                "subtitle": "Vui lòng nhập thông tin tài khoản để đăng nhập",
+                "email": "Email",
+                "username" : "Tên đăng nhập",
+                "password": "Mật khẩu",
+                "remember": "Ghi nhớ đăng nhập",
+                "forgotPassword": "Quên mật khẩu?",
+                "signIn": "Đăng nhập",
+                "noAccount": "Bạn chưa có tài khoản?",
+                "signUp": "Đăng ký"
+            },
             "Validation": {
-                   "RequiredField": "Vui lòng nhập {field}",
+                "RequiredField": "Vui lòng nhập {field}",
                 "MinLength": "{field} phải có ít nhất {min} ký tự",
                 "MaxLength": "{field} không được vượt quá {max} ký tự",
                 "MustBeNumber": "{field} phải là số",
@@ -53,7 +70,8 @@
                 "role" : "chức vụ",
                 "banner" : "Banner",
                 "logActive": "Lịch sử hành động",
-                "productImportExport" : "Quản lý nhập xuất sản phẩm"
+                "productImportExport" : "Quản lý nhập xuất sản phẩm",
+                "productLog" : "Lịch sử nhập xuất sản phẩm"
             },
             "ManageTitleText": "Quản lý",
             "ListTitleText": "Danh sách",
@@ -334,6 +352,7 @@
                 },
                 "quantity" :"số lượng",
                 "import_price" : "Giá nhập",
+                 "action" : "Hành động",
                 "expected_sell_price" : "Giá bán ước tính",
                 "expected_rent_price" : "Giá thuê ước tính",
                 "actual_price_at_that_time" : "Giá ước tính",

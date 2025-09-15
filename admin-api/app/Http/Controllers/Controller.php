@@ -55,11 +55,11 @@ abstract class Controller
         return $this->returnResponseData($status, $result);
     }
 
-    public function returnResponseMessage($status = "success", $messageKey)
+    public function returnResponseMessage($status = "success", $messageKey, $typeFullText = false)
     {
         return response()->json([
             'status' => $status,
-            'message' =>    trans('message.acctionMessage', [
+            'message' =>  $typeFullText ? $messageKey :  trans('message.acctionMessage', [
                 'attribute' => trans("message.$messageKey"),
                 'status' => trans("message.$status"),
             ]),

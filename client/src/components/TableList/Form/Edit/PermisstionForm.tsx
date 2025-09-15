@@ -1,8 +1,7 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef} from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useDropzone } from "react-dropzone";
 import { STATUS_ACTIVE, STATUS_NOT_ACTIVE } from "@/constants/DataDefault";
 import ComponentCard from "@/components/common/ComponentCard";
 import Label from "@/components/form/Label";
@@ -11,10 +10,10 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { updatePermisstion } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { updatePermisstion } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch  } from "@/lib/redux/store";
+import {  useDispatch } from 'react-redux';
+import { AppDispatch  } from "@/lib/redux/store";
 import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2';
 export default function DefaultInputs({ dataDetail }: { dataDetail: any }) {

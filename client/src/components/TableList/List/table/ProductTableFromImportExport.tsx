@@ -12,7 +12,7 @@ import Badge from "../../../ui/badge/Badge";
 import { ProductListTable } from "@/constants/Interface";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { deleteProduct } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { deleteProductImportExport } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { RootState } from "@/lib/redux/store";
@@ -42,7 +42,7 @@ export default function ProductTableFrom({ data = [] }: PropProductTable) {
     });
 
     if (result.isConfirmed) {
-      await dispatch(deleteProduct(id));
+      await dispatch(deleteProductImportExport(id));
     }
   };
 
@@ -68,7 +68,7 @@ export default function ProductTableFrom({ data = [] }: PropProductTable) {
       setCheckAll(false);
     }
   }, [deleteIds, data]);
-
+  console.log(data)
   return (
     <div>
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -118,10 +118,11 @@ export default function ProductTableFrom({ data = [] }: PropProductTable) {
                       <LuArrowDown/>
                       </ClickComponent>
                       </div>
-                     <p> {t("Product.code")}</p>
+                     <p> {t("productImportExport.code")}</p>
                     </div>
                     </TableCell>
-                  <TableCell isHeader className="px-5 py-3 text-start">{t("Product.status")}</TableCell>
+
+                  <TableCell isHeader className="px-5 py-3 text-start">{t("productImportExport.type")}</TableCell>
                   <TableCell isHeader className="px-5 py-3 text-center">{t("Base.Action")}</TableCell>
                 </TableRow>
               </TableHeader>
@@ -140,31 +141,26 @@ export default function ProductTableFrom({ data = [] }: PropProductTable) {
                     </TableCell>
                     <TableCell className="px-5 py-4 text-start">
                       <span className="font-medium text-gray-800 dark:text-white/90">
-                        {item.name}
+                        {item.product?.name}
                       </span>
                     </TableCell>
-                    <TableCell className="px-4 py-3 text-start text-gray-500 dark:text-gray-400">
-                      {item.code}
+                     <TableCell className="px-5 py-4 text-start">
+                      <span className="font-medium text-gray-800 dark:text-white/90">
+                        {item.product?.name}
+                      </span>
                     </TableCell>
                     <TableCell className="px-4 py-3 text-start">
-                      <Badge
-                        size="sm"
-                        color={item.status === 1 ? "success" : "error"}
-                      >
-                        {item.status === 1
-                          ? t("Product.statusValue.active")
-                          : t("Product.statusValue.hideTemporarily")}
-                      </Badge>
+                       {item.type}
                     </TableCell>
                     <TableCell className="px-4 py-3 flex gap-2 justify-center">
                       <Link
-                        href={`/admin/manage-list/edit/${item.id}?query=product`}
+                        href={`/admin/manage-list/edit/${item.id}?query=product-import-export`}
                         className="bg-orange-500 hover:bg-orange-800 text-white px-4 py-2 rounded-lg text-sm"
                       >
                         {t("Base.Update")}
                       </Link>
                       <Link
-                        href={`/admin/manage-list/view/${item.id}?query=product`}
+                        href={`/admin/manage-list/view/${item.id}?query=product-import-export`}
                         className="bg-green-500 hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm"
                       >
                         {t("Base.View")}

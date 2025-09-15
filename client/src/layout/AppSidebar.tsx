@@ -54,7 +54,8 @@ const AppSidebar: React.FC = () => {
         { name: t('Page.publisher'), path: "/admin/manage-list?query=publisher", pro: false },
         { name: t('Page.series'), path: "/admin/manage-list?query=series", pro: false },
         { name: t('Page.product'), path: "/admin/manage-list?query=product", pro: false },
-          { name: t('Page.productImportExport'), path: "/admin/manage-list?query=product-import-export", pro: false },
+        { name: t('Page.productImportExport'), path: "/admin/manage-list?query=product-import-export", pro: false },
+       { name: t('Page.productLog'), path: "/admin/manage-list?query=product-log", pro: false },
       ],
     },
      {

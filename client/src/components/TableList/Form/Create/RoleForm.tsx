@@ -16,7 +16,7 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createRole } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createRole } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
@@ -26,7 +26,7 @@ import {
   getDataPermisstionServer,
   getDataActionServer,
   getDataPermisstionDetailServer
-} from "@/lib/callAPI/ServiceReduxCallAPI";
+} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 
 type OptionType = { value: string | number; label: string };
 

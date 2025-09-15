@@ -2,6 +2,8 @@
 
 namespace App\Services\Functions\Execute\Product\Product;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Product\Product\ProductRepositoryInterface;
 use App\Enums\BaseRequestAttribute;
 use App\Services\Functions\Action\Image\UploadImageToFirebase;
@@ -55,7 +57,7 @@ class ProductService implements ProductServiceInterface
             'tags' => $request->tags,
             'ended_ad' => $request->ended_ad,
             'images' => $request->images !== null ? app(UploadImageToFirebase::class)->upload($request->images) : null,
-            'coverPhoto' => $request->coverPhoto !== null ?  app(UploadImageToFirebase::class)->upload($request->coverPhoto) : null,
+            'coverPhoto' => $request->coverPhoto !== null ? app(UploadImageToFirebase::class)->upload($request->coverPhoto) : null,
             'description' => $request->description ?? null,
         ];
         $create = $this->repository->createData($data);
@@ -83,11 +85,11 @@ class ProductService implements ProductServiceInterface
             'published_ad' => $request->published_ad,
             'started_ad' => $request->started_ad,
             'ended_ad' => $request->ended_ad,
-            'images' => $request->images ?  app(UploadImageToFirebase::class)->upload($request->images) : null,
-            'coverPhoto' => $request->coverPhoto ?  app(UploadImageToFirebase::class)->upload($request->coverPhoto) : null,
+            'images' => $request->images ? app(UploadImageToFirebase::class)->upload($request->images) : null,
+            'coverPhoto' => $request->coverPhoto ? app(UploadImageToFirebase::class)->upload($request->coverPhoto) : null,
             'description' => $request->description ?? null,
         ];
-        return $this->repository->updateData($id,  $data);
+        return $this->repository->updateData($id, $data);
     }
 
     public function deleteAction($id)
@@ -101,6 +103,8 @@ class ProductService implements ProductServiceInterface
             $this->repository->findViewDetail($id, ['author', 'category', 'publisher'])
         );
     }
+
+
 
     public function getListLog($request)
     {
@@ -138,56 +142,172 @@ class ProductService implements ProductServiceInterface
 
     public function createImportExportAction($request)
     {
-        $data = [
-            'product_id' => $request->product_id,
-            'code' => $request->code ?? null,
-            'action' => $request->action, // mua , thuê, 
-            'type' => $request->type, // Nhập hoặc xuất
-            'mode' => $request->mode, // xuất kho, hoàn hàng, ...
-            'quantity' => $request->quantity,
-            'import_price' => $request->import_price,
-            'expected_sell_price' => $request->expected_sell_price,
-            'expected_rent_price' => $request->expected_rent_price,
-            'actual_price_at_that_time' => $request->actual_price_at_that_time,
-            'note' => $request->note,
-        ];
+        return DB::transaction(function () use ($request) {
+            $code = $this->repository->generateUniqueProductCode();
 
-        $create = $this->repository->createImportExportData($data);
-        $this->createLogAction([
-            'product_id' => $request->product_id,
-            'code' => $request->code ?? null,
-            'action' => $request->action,
-            'mode' => $request->mode,
-            'direction' => $request->direction,
-            'quantity' => $request->quantity,
-            'source' => 'manual',
-            'note' => $request->note ?? null,
-        ]);
-        if ($request->action === ProductTypeQuantityEnums::BUY) {
-            $this->repository->updateQuantityBuyData($request->product_id, ['action' => $request->action]);
-        } else if ($request->action === ProductTypeQuantityEnums::SELL) {
-            $this->repository->updateQuantityRentData($request->product_id, ['action' => $request->action]);
-        }
+            $data = [
+                'product_id' => $request->product_id,
+                'code' => $code,
+                'type' => $request->type, // Nhập hoặc xuất
+                'mode' => $request->mode, // xuất kho, hoàn hàng, ...
+                'quantity' => $request->quantity,
+                'import_price' => $request->import_price,
+                'expected_sell_price' => $request->expected_sell_price,
+                'expected_rent_price' => $request->expected_rent_price,
+                'actual_price_at_that_time' => $request->actual_price_at_that_time,
+                'note' => $request->note,
+            ];
 
-        return $create['status'];
+            // 1. Tạo bản ghi import/export
+            $create = $this->repository->createImportExportData($data);
+
+            // 2. Ghi log
+            $this->repository->createLogData([
+                'product_id' => $request->product_id,
+                'code' => $code,
+                'action' => $request->action,
+                'mode' => $request->mode,
+                'direction' => $request->type,
+                'quantity' => $request->quantity,
+                'source' => 'manual',
+                'note' => $request->note ?? null,
+            ]);
+
+            // 3. Cập nhật số lượng
+            if ($request->action === ProductTypeQuantityEnums::BUY || $request->action === ProductTypeQuantityEnums::IMPORT) {
+                $this->repository->increaseQuantity($request->product_id, [
+                    'type' => $request->type,
+                    'quantity' => $request->quantity,
+                ]);
+            } elseif ($request->action === ProductTypeQuantityEnums::SELL || $request->action === ProductTypeQuantityEnums::EXPORT) {
+                $this->repository->decreaseQuantity($request->product_id, [
+                    'type' => $request->type,
+                    'quantity' => $request->quantity,
+                ]);
+            }
+
+            return $create['status'];
+        });
     }
 
-    public function createLogAction($data)
+
+    public function findByViewImportExport($id)
     {
-        $data = [
-            'product_id' => $data->product_id,
-            'code' => $data->code ?? null,
-            'action' => $data->action, /// hành động
-            'mode' => $data->mode, /// 
-            'direction' => $data->type, // tăng hay giảm (+ hoặc -)
-            'quantity' => $data->quantity, // số lượng
-            'source' => 'manual',
-            'note' => $request->note ?? null,
-        ];
+        return new ProductDetailResource(
+            $this->repository->findViewImportExport($id, ['product'])
+        );
+    }
 
-        $create = $this->repository->createLogData($data);
+    public function findByViewLog($id)
+    {
+        return new ProductDetailResource(
+            $this->repository->findViewLog($id, ['product'])
+        );
+    }
 
-        return $create['status'];
+    public function updateImportExportAction($id, $request)
+    {
+        $findData = $this->repository->findViewImportExport($id, ['product']);
+
+        // Lấy số lượng kho hiện tại theo loại sản phẩm
+        $available_quantity = $findData->model === ProductTypeQuantityEnums::SELL
+            ? $findData->product->buy_quantity
+            : $findData->product->rent_quantity;
+
+        // Tính delta: số lượng mới - số lượng cũ
+        $delta_quantity = $request->quantity - $findData->quantity;
+
+        // Nếu giảm kho mà vượt số lượng thực tế, cảnh báo
+        if ($available_quantity - abs($delta_quantity) < 0) {
+            return [
+                'status' => 'warning',
+                'message' => 'Không thể thực hiện do sai số lớn hơn số lượng hàng trong kho',
+                'typeFullText' => true
+            ];
+        }
+        return DB::transaction(function () use ($request, $findData, $delta_quantity, $id) {
+            $data = [
+                'quantity' => $request->quantity,
+                'import_price' => $request->import_price,
+                'expected_sell_price' => $request->expected_sell_price,
+                'expected_rent_price' => $request->expected_rent_price,
+                'actual_price_at_that_time' => $request->actual_price_at_that_time,
+                'note' => $request->note,
+            ];
+            // 1. Tạo bản ghi import/export
+            $update = $this->repository->updateImportExportData($id, $data);
+            // 2. Ghi log
+            $this->repository->createLogData([
+                'product_id' => $findData->product_id,
+                'code' =>  'UPDATE' . $findData->code,
+                'action' => 'updateImportExport',
+                'mode' => $findData->mode,
+                'direction' => $findData->type,
+                'quantity' => $request->quantity,
+                'source' => 'manual',
+                'note' => $request->note ?? 'Thay đổi số lượng nhập xuất',
+            ]);
+
+            // 3. Cập nhật số lượng
+            if ($delta_quantity > 0) {
+                $this->repository->increaseQuantity($request->product_id, [
+                    'type' => ProductTypeQuantityEnums::INCREASE,
+                    'quantity' => $request->quantity,
+                ]);
+            } elseif ($delta_quantity < 0) {
+                $this->repository->decreaseQuantity($request->product_id, [
+                    'type' => ProductTypeQuantityEnums::DECREASE,
+                    'quantity' => $request->quantity,
+                ]);
+            }
+
+            return [
+                'status' => $update['status'],
+                'typeFullText' => false
+            ];
+        });
+    }
+
+    public function deleteImportExportAction($id)
+    {
+        $findData = $this->repository->findViewImportExport($id, ['product']);
+
+        // Lấy số lượng kho hiện tại theo loại sản phẩm
+        $available_quantity = $findData->model === ProductTypeQuantityEnums::SELL
+            ? $findData->product->buy_quantity
+            : $findData->product->rent_quantity;
+
+        $delta_quantity =  $findData->quantity;
+
+        // Nếu giảm kho mà vượt số lượng thực tế, cảnh báo
+        if ($available_quantity - abs($delta_quantity) < 0) {
+            return [
+                'status' => 'warning',
+                'message' => trans('message.insufficient_quantity')
+            ];
+        }
+        return DB::transaction(function () use ($findData, $delta_quantity) {
+            $delete = $this->repository->deleteDataImportExport($findData->id);
+
+            // 2. Ghi log
+            $this->repository->createLogData([
+                'product_id' => $findData->product_id,
+                'code' =>  'DELETE' . $findData->code,
+                'action' => 'deleteImportExport',
+                'mode' => $findData->mode,
+                'direction' => $findData->type,
+                'quantity' => $findData->quantity,
+                'source' => 'manual',
+                'note' => $request->note ?? 'Thay đổi số lượng nhập xuất',
+            ]);
+
+            $this->repository->decreaseQuantity($findData->product_id, [
+                'type' => ProductTypeQuantityEnums::DECREASE,
+                'quantity' => $findData->quantity,
+            ]);
+
+            return $delete['status'];
+        });
     }
 
     public function getListService($request)

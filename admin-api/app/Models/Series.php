@@ -43,7 +43,7 @@ class Series extends Model
         };
         $activity->subject_type = self::$logName;
     }
-    public function scopeGetActive($query, $status)
+    public function scopeGetActive($query, $status = 1)
     {
         return $query->where('status', $status);
     }

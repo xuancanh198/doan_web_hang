@@ -11,9 +11,9 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createCategory } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createCategory } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
-import { getDataCategoryServer } from "@/lib/callAPI/ServiceReduxCallAPI"
+import { getDataCategoryServer } from "@/lib/callAPI/admin/ServiceServerCallAPI"
 import { PAGE_DEFAULT, LIMIT_DEFAULT, NULL_VALUE_DEFAULT } from "@/constants/DataDefault";
 import { useDispatch } from 'react-redux';
 import {  AppDispatch  } from "@/lib/redux/store";
@@ -95,6 +95,9 @@ export default function DefaultInputs() {
     formData.append("description", values.description);
     if (values.image) {
       formData.append("image", values.image);
+    }
+    if (values.parent !== null && values.parent !== "") {
+      formData.append("parent_id", values.parent);
     }
     const data = await dispatch(createCategory(formData));
     if(data?.status === "success") {

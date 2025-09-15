@@ -16,7 +16,7 @@ import Select from "@/components/form/Select";
 import TextArea from "@/components/form/input/TextArea";
 import Button from "@/components/ui/button/Button";
 import { ChevronDownIcon } from "@/icons";
-import { createStaff } from "@/lib/callAPI/ServiceReduxCallAPI";
+import { createStaff } from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useTranslations } from "next-intl";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import {
   getDataRoleServer
-} from "@/lib/callAPI/ServiceReduxCallAPI";
+} from "@/lib/callAPI/admin/ServiceReduxCallAPI";
 import { useDropzone } from "react-dropzone";
 
 type OptionType = { value: string | number; label: string };
